@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        /* Custom scrollbar for textareas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #a0a0a0;
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #808080;
+        }
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #ffffff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 lg:p-12">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-10 border border-gray-200">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Prompt Generator AI</h1>
+        <p class="text-center text-gray-600 mb-10">Buat prompt yang sempurna untuk menghasilkan gambar impian Anda dengan mudah!</p>
+
+        <form id="promptForm" class="space-y-8">
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">1. Deskripsi Utama</h2>
+                <label for="mainDescription" class="block text-gray-700 text-lg font-medium mb-2">Apa yang ingin Anda gambarkan?</label>
+                <textarea id="mainDescription" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-y" placeholder="Contoh: seorang gadis muda, duduk di tepi danau, memandangi langit senja"></textarea>
+                <p class="text-sm text-gray-500 mt-2">Tips: Mulai dengan subjek utama dan aksi.</p>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">2. Gaya Visual</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="realistic" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Realistis / Fotografi</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="oil painting" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Lukisan Cat Minyak</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="watercolor" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Cat Air</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="digital illustration" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Ilustrasi Digital</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="concept art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Konseptual</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="fantasy art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Fantasi</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="sci-fi art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Sains Fiksi</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="minimalist art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Minimalis</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="cartoon" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Kartun / Anime</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="pixel art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Piksel</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="3D render" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">3D Render (CGI)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="line art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Garis (Line Art)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="abstract art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Abstrak</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="impressionism" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Impresionisme</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="surrealism" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Surealisme</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="pop art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Pop</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="classical art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Klasik</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="manga style" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gaya Manga</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="sketch art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Seni Sketsa</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="comic style" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gaya Komik</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="ghibli style" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gaya Ghibli</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="disney style" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gaya Disney</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="pixar style" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gaya Pixar</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="artStyle" value="texture art" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gaya Tekstur (Texture Art)</span>
+                    </label>
+                </div>
+                <div class="mt-4">
+                    <label for="otherArtStyle" class="block text-gray-700 text-lg font-medium mb-2">Lainnya (pisahkan dengan koma):</label>
+                    <input type="text" id="otherArtStyle" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: cyberpunk, steampunk">
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">3. Detail Subjek/Objek</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="characterDetails" class="block text-gray-700 text-lg font-medium mb-2">Karakter/Subjek:</label>
+                        <textarea id="characterDetails" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-y" placeholder="Contoh: rambut panjang bergelombang, mata hijau terang, ekspresi tenang"></textarea>
+                    </div>
+                    <div>
+                        <label for="objectDetails" class="block text-gray-700 text-lg font-medium mb-2">Objek Tambahan:</label>
+                        <textarea id="objectDetails" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-y" placeholder="Contoh: sebuah perahu kayu kecil, bunga teratai di air"></textarea>
+                    </div>
+                    <div>
+                        <label for="dominantColors" class="block text-gray-700 text-lg font-medium mb-2">Warna Dominan:</label>
+                        <input type="text" id="dominantColors" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: ungu lembut, oranye keemasan, biru gelap">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">4. Lingkungan/Latar Belakang</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="location" class="block text-gray-700 text-lg font-medium mb-2">Lokasi:</label>
+                        <input type="text" id="location" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: hutan lebat, kota metropolitan, pegunungan bersalju, lautan luas">
+                    </div>
+                    <div>
+                        <label for="timeSeason" class="block text-gray-700 text-lg font-medium mb-2">Waktu/Musim:</label>
+                        <input type="text" id="timeSeason" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: pagi hari, malam hari, senja, musim gugur">
+                    </div>
+                    <div>
+                        <label for="weatherAtmosphere" class="block text-gray-700 text-lg font-medium mb-2">Cuaca/Atmosfer:</label>
+                        <input type="text" id="weatherAtmosphere" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: mendung, cerah, berkabut, bersalju, hujan deras">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Pencahayaan:</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="natural light" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Alami</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="soft light" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Lembut</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="dramatic lighting" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Dramatis</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="neon light" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Neon</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="backlight" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Kembali (Backlight)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="side light" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Samping (Side Light)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="sunrise/sunset lighting" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Cahaya Matahari Terbit/Terbenam</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="low-key lighting" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Pencahayaan Low-Key</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="lighting" value="high-key lighting" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Pencahayaan High-Key</span>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <label for="otherLighting" class="block text-gray-700 text-lg font-medium mb-2">Lainnya (pisahkan dengan koma):</label>
+                            <input type="text" id="otherLighting" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: volumetric lighting, cinematic lighting">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">5. Komposisi & Sudut Pandang</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Sudut Pandang Kamera:</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="low angle" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Sudut Rendah (Low Angle)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="high angle" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Sudut Tinggi (High Angle)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="bird's eye view" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Tampilan Mata Burung</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="worm's eye view" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Tampilan Mata Serangga</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="eye level" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Sudut Normal (Eye Level)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="close-up" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Close-up</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="medium shot" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Medium Shot</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="full shot" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Full Shot</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="wide shot" class="form-radio text-blue-600">
+                                <span class="text-gray-700">Wide Shot / Panorama</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="cameraAngle" value="other" class="form-radio text-blue-600" id="cameraAngleOtherRadio">
+                                <span class="text-gray-700">Lainnya:</span>
+                                <input type="text" id="otherCameraAngle" class="ml-2 p-1 border border-gray-300 rounded-md text-sm w-24" placeholder="Contoh: dutch angle">
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Komposisi:</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="rule of thirds" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Aturan Sepertiga</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="symmetrical composition" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Simetris</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="asymmetrical composition" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Asimetris</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="leading lines" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Leading Lines</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="framing" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Framing</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="shallow depth of field" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Kedalaman Bidang Dangkal</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="composition" value="deep depth of field" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Kedalaman Bidang Dalam</span>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <label for="otherComposition" class="block text-gray-700 text-lg font-medium mb-2">Lainnya (pisahkan dengan koma):</label>
+                            <input type="text" id="otherComposition" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: golden ratio, dynamic composition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">6. Kualitas Gambar & Resolusi</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Kualitas:</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="highly detailed" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Sangat Detail</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="photorealistic" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Realistis Foto</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="cinematic quality" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Kualitas Sinematik</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="high resolution" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Resolusi Tinggi</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="4K/8K" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Resolusi Ultra HD (4K/8K)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="sharp focus" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Jelas (Sharp)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="soft focus" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Fokus Lembut</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="checkbox" name="imageQuality" value="grainy" class="form-checkbox text-blue-600 rounded">
+                                <span class="text-gray-700">Grainy</span>
+                            </label>
+                        </div>
+                        <div class="mt-4">
+                            <label for="otherImageQuality" class="block text-gray-700 text-lg font-medium mb-2">Lainnya (pisahkan dengan koma):</label>
+                            <input type="text" id="otherImageQuality" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: masterpiece, award-winning">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-lg font-medium mb-2">Rasio Aspek:</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="1:1" class="form-radio text-blue-600">
+                                <span class="text-gray-700">1:1 (Persegi)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="3:2" class="form-radio text-blue-600">
+                                <span class="text-gray-700">3:2 (Standar DSLR)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="4:3" class="form-radio text-blue-600">
+                                <span class="text-gray-700">4:3 (Standar Layar Lama)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="16:9" class="form-radio text-blue-600">
+                                <span class="text-gray-700">16:9 (Layar Lebar)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="9:16" class="form-radio text-blue-600">
+                                <span class="text-gray-700">9:16 (Vertikal)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="21:9" class="form-radio text-blue-600">
+                                <span class="text-gray-700">21:9 (Ultrawide)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="2:1" class="form-radio text-blue-600">
+                                <span class="text-gray-700">2:1 (Panorama Ringan)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                                <input type="radio" name="aspectRatio" value="custom" class="form-radio text-blue-600" id="aspectRatioCustomRadio">
+                                <span class="text-gray-700">Custom:</span>
+                                <input type="number" id="customWidth" class="ml-2 p-1 border border-gray-300 rounded-md text-sm w-20" placeholder="Lebar">
+                                <span class="mx-1">x</span>
+                                <input type="number" id="customHeight" class="p-1 border border-gray-300 rounded-md text-sm w-20" placeholder="Tinggi">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">7. Nuansa & Emosi</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="calm" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Tenang</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="mysterious" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Misterius</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="joyful" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Gembira</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="melancholic" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Melankolis</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="eerie" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Mencekam</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="epic" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Epik</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="peaceful" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Damai</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="gloomy" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Suram</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition duration-200 border border-gray-200">
+                        <input type="checkbox" name="moodEmotion" value="romantic" class="form-checkbox text-blue-600 rounded">
+                        <span class="text-gray-700">Romantis</span>
+                    </label>
+                </div>
+                <div class="mt-4">
+                    <label for="otherMoodEmotion" class="block text-gray-700 text-lg font-medium mb-2">Lainnya (pisahkan dengan koma):</label>
+                    <input type="text" id="otherMoodEmotion" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="Contoh: energetic, serene">
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">8. Kata Kunci Negatif (Opsional)</h2>
+                <label for="negativeKeywords" class="block text-gray-700 text-lg font-medium mb-2">Apa yang TIDAK ingin Anda lihat dalam gambar? (Pisahkan dengan koma)</label>
+                <textarea id="negativeKeywords" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-200 resize-y" placeholder="Contoh: kabur, jelek, distorsi, watermark, teks"></textarea>
+                <p class="text-sm text-gray-500 mt-2">Tips: Gunakan ini untuk menyaring hasil yang tidak diinginkan.</p>
+            </div>
+
+            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4">Hasil Prompt</h2>
+                <textarea id="generatedPrompt" rows="6" class="w-full p-4 border border-blue-300 rounded-lg bg-blue-100 text-blue-900 font-mono text-base resize-y" readonly placeholder="Prompt Anda akan muncul di sini setelah Anda mengklik 'Generate Prompt'."></textarea>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                    <button type="button" id="generateBtn" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300 ease-in-out transform hover:scale-105">
+                        Generate Prompt
+                    </button>
+                    <button type="button" id="enhanceBtn" class="bg-purple-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-4 focus:ring-purple-300 transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                        <span id="enhanceBtnText">Enhance Prompt ✨</span>
+                        <div id="enhanceSpinner" class="spinner ml-2 hidden"></div>
+                    </button>
+                    <button type="button" id="copyBtn" class="bg-green-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-300 transition duration-300 ease-in-out transform hover:scale-105">
+                        Salin Prompt
+                    </button>
+                    <button type="button" id="resetBtn" class="bg-red-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition duration-300 ease-in-out transform hover:scale-105">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <div id="messageBox" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+                    <p id="messageText" class="text-lg font-semibold text-gray-800 mb-4"></p>
+                    <button id="closeMessageBox" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200">Tutup</button>
+                </div>
+            </div>
+
+        </form>
+
+        <p class="text-center text-gray-500 mt-10 text-sm">
+            Prompt yang dihasilkan dapat Anda gunakan pada berbagai model AI text-to-image seperti Midjourney, DALL-E 3, Stable Diffusion, atau Leonardo AI.
+            Setiap model mungkin memiliki cara interpretasi yang sedikit berbeda, jadi eksperimenlah!
+        </p>
+    </div>
+
+    <script>
+        // Get elements
+        const mainDescription = document.getElementById('mainDescription');
+        const artStyleCheckboxes = document.querySelectorAll('input[name="artStyle"]');
+        const otherArtStyle = document.getElementById('otherArtStyle');
+        const characterDetails = document.getElementById('characterDetails');
+        const objectDetails = document.getElementById('objectDetails');
+        const dominantColors = document.getElementById('dominantColors');
+        const locationInput = document.getElementById('location');
+        const timeSeason = document.getElementById('timeSeason');
+        const weatherAtmosphere = document.getElementById('weatherAtmosphere');
+        const lightingCheckboxes = document.querySelectorAll('input[name="lighting"]');
+        const otherLighting = document.getElementById('otherLighting');
+        const cameraAngleRadios = document.querySelectorAll('input[name="cameraAngle"]');
+        const otherCameraAngle = document.getElementById('otherCameraAngle');
+        const compositionCheckboxes = document.querySelectorAll('input[name="composition"]');
+        const otherComposition = document.getElementById('otherComposition');
+        const imageQualityCheckboxes = document.querySelectorAll('input[name="imageQuality"]');
+        const otherImageQuality = document.getElementById('otherImageQuality');
+        const aspectRatioRadios = document.querySelectorAll('input[name="aspectRatio"]');
+        const customWidth = document.getElementById('customWidth');
+        const customHeight = document.getElementById('customHeight');
+        const moodEmotionCheckboxes = document.querySelectorAll('input[name="moodEmotion"]');
+        const otherMoodEmotion = document.getElementById('otherMoodEmotion');
+        const negativeKeywords = document.getElementById('negativeKeywords');
+        const generatedPrompt = document.getElementById('generatedPrompt');
+        const generateBtn = document.getElementById('generateBtn');
+        const enhanceBtn = document.getElementById('enhanceBtn'); // New enhance button
+        const enhanceBtnText = document.getElementById('enhanceBtnText'); // Text for enhance button
+        const enhanceSpinner = document.getElementById('enhanceSpinner'); // Spinner for enhance button
+        const copyBtn = document.getElementById('copyBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const closeMessageBox = document.getElementById('closeMessageBox');
+
+        // Function to show custom message box
+        function showMessageBox(message) {
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+        }
+
+        // Function to close custom message box
+        closeMessageBox.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+        });
+
+        // Event listener for custom camera angle input
+        document.getElementById('cameraAngleOtherRadio').addEventListener('change', function() {
+            if (this.checked) {
+                otherCameraAngle.focus();
+            }
+        });
+
+        // Event listener for custom aspect ratio input
+        document.getElementById('aspectRatioCustomRadio').addEventListener('change', function() {
+            if (this.checked) {
+                customWidth.focus();
+            }
+        });
+
+        // Function to generate the prompt based on form inputs
+        function generatePrompt() {
+            let promptParts = [];
+            let negativeParts = [];
+
+            // 1. Main Description
+            if (mainDescription.value.trim()) {
+                promptParts.push(mainDescription.value.trim());
+            }
+
+            // 6. Kualitas Gambar & Resolusi (prioritize quality first)
+            let quality = Array.from(imageQualityCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            if (otherImageQuality.value.trim()) {
+                quality = quality.concat(otherImageQuality.value.split(',').map(s => s.trim()).filter(s => s));
+            }
+            if (quality.length > 0) {
+                promptParts.push(quality.join(', '));
+            }
+
+            // 2. Gaya Visual
+            let styles = Array.from(artStyleCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            if (otherArtStyle.value.trim()) {
+                styles = styles.concat(otherArtStyle.value.split(',').map(s => s.trim()).filter(s => s));
+            }
+            if (styles.length > 0) {
+                promptParts.push(`in the style of ${styles.join(', ')}`);
+            }
+
+            // 3. Detail Subjek/Objek
+            if (characterDetails.value.trim()) {
+                promptParts.push(characterDetails.value.trim());
+            }
+            if (objectDetails.value.trim()) {
+                promptParts.push(objectDetails.value.trim());
+            }
+            if (dominantColors.value.trim()) {
+                promptParts.push(`${dominantColors.value.trim()} colors`);
+            }
+
+            // 4. Lingkungan/Latar Belakang
+            if (locationInput.value.trim()) {
+                promptParts.push(`in a ${locationInput.value.trim()}`);
+            }
+            if (timeSeason.value.trim()) {
+                promptParts.push(`during ${timeSeason.value.trim()}`);
+            }
+            if (weatherAtmosphere.value.trim()) {
+                promptParts.push(`with ${weatherAtmosphere.value.trim()}`);
+            }
+            let lighting = Array.from(lightingCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            if (otherLighting.value.trim()) {
+                lighting = lighting.concat(otherLighting.value.split(',').map(s => s.trim()).filter(s => s));
+            }
+            if (lighting.length > 0) {
+                promptParts.push(`with ${lighting.join(', ')}`);
+            }
+
+            // 5. Komposisi & Sudut Pandang
+            let cameraAngle = Array.from(cameraAngleRadios).find(radio => radio.checked);
+            if (cameraAngle) {
+                if (cameraAngle.value === 'other' && otherCameraAngle.value.trim()) {
+                    promptParts.push(`${otherCameraAngle.value.trim()} shot`);
+                } else if (cameraAngle.value !== 'other') {
+                    promptParts.push(`${cameraAngle.value} shot`);
+                }
+            }
+            let composition = Array.from(compositionCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            if (otherComposition.value.trim()) {
+                composition = composition.concat(otherComposition.value.split(',').map(s => s.trim()).filter(s => s));
+            }
+            if (composition.length > 0) {
+                promptParts.push(`${composition.join(', ')} composition`);
+            }
+
+            // 7. Nuansa & Emosi
+            let mood = Array.from(moodEmotionCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            if (otherMoodEmotion.value.trim()) {
+                mood = mood.concat(otherMoodEmotion.value.split(',').map(s => s.trim()).filter(s => s));
+            }
+            if (mood.length > 0) {
+                promptParts.push(`${mood.join(', ')} atmosphere`);
+            }
+
+            // 6. Rasio Aspek (add at the end for Midjourney style)
+            let aspectRatio = Array.from(aspectRatioRadios).find(radio => radio.checked);
+            if (aspectRatio) {
+                if (aspectRatio.value === 'custom' && customWidth.value.trim() && customHeight.value.trim()) {
+                    promptParts.push(`--ar ${customWidth.value.trim()}:${customHeight.value.trim()}`);
+                } else if (aspectRatio.value !== 'custom') {
+                    promptParts.push(`--ar ${aspectRatio.value}`);
+                }
+            }
+
+            // 8. Kata Kunci Negatif
+            if (negativeKeywords.value.trim()) {
+                negativeParts.push(negativeKeywords.value.split(',').map(s => s.trim()).filter(s => s).join(', '));
+            }
+
+            // Combine all parts
+            let finalPrompt = promptParts.filter(part => part).join(', ');
+            if (negativeParts.length > 0) {
+                finalPrompt += ` --no ${negativeParts.join(', ')}`;
+            }
+
+            generatedPrompt.value = finalPrompt;
+        }
+
+        // Function to enhance the prompt using Gemini API
+        async function enhancePrompt() {
+            const currentPrompt = generatedPrompt.value.trim();
+
+            if (!currentPrompt) {
+                showMessageBox('Harap generate prompt terlebih dahulu sebelum meningkatkan.');
+                return;
+            }
+
+            // Show loading spinner and disable button
+            enhanceBtnText.classList.add('hidden');
+            enhanceSpinner.classList.remove('hidden');
+            enhanceBtn.disabled = true;
+
+            try {
+                let chatHistory = [];
+                const prompt = `Perbaiki dan buat prompt gambar ini lebih detail dan kreatif untuk AI text-to-image. Jangan tambahkan informasi rasio aspek atau kata kunci negatif (--no) kecuali jika sudah ada di prompt asli. Pastikan outputnya hanya prompt yang ditingkatkan, tanpa awalan atau akhiran tambahan. Prompt: "${currentPrompt}"`;
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // API key is provided by the Canvas environment
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const enhancedText = result.candidates[0].content.parts[0].text;
+                    generatedPrompt.value = enhancedText.trim(); // Update with enhanced prompt
+                    showMessageBox('Prompt berhasil ditingkatkan dengan Gemini! ✨');
+                } else {
+                    showMessageBox('Gagal meningkatkan prompt. Coba lagi.');
+                    console.error('Gemini API response structure unexpected:', result);
+                }
+            } catch (error) {
+                showMessageBox('Terjadi kesalahan saat menghubungi Gemini API.');
+                console.error('Error enhancing prompt:', error);
+            } finally {
+                // Hide loading spinner and enable button
+                enhanceBtnText.classList.remove('hidden');
+                enhanceSpinner.classList.add('hidden');
+                enhanceBtn.disabled = false;
+            }
+        }
+
+        // Function to copy prompt to clipboard
+        function copyPrompt() {
+            if (generatedPrompt.value) {
+                generatedPrompt.select();
+                document.execCommand('copy'); // Fallback for navigator.clipboard.writeText
+                showMessageBox('Prompt berhasil disalin!');
+            } else {
+                showMessageBox('Tidak ada prompt untuk disalin.');
+            }
+        }
+
+        // Function to reset the form
+        function resetForm() {
+            document.getElementById('promptForm').reset();
+            generatedPrompt.value = '';
+            showMessageBox('Formulir telah direset!');
+        }
+
+        // Event Listeners for buttons
+        generateBtn.addEventListener('click', generatePrompt);
+        enhanceBtn.addEventListener('click', enhancePrompt); // New event listener for enhance button
+        copyBtn.addEventListener('click', copyPrompt);
+        resetBtn.addEventListener('click', resetForm);
+    </script>
+</body>
+</html>
